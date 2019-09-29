@@ -1,0 +1,19 @@
+<div class="container">
+<%= form_for @changeset, activity_path(@conn, :create), fn f -> %>
+  <h2 class="blue-grey-text">Add a New Post</h2>
+      <div class="row">
+        <div class="input-field col s12">
+        <input type="text" name="activity[name]" class="validate" placeholder="Activity Name">
+          
+          </div>
+      </div>
+    <div class="row">
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea name="activity[description]" class="materialize-textarea" placeholder="Activity Description"></textarea>
+        </div>
+      </div>
+    </div>
+    <input type="submit" class="btn btn-primary btn-sm" value="Add Activity">
+<% end %>
+</div>

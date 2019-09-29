@@ -1,0 +1,42 @@
+ <div class="container text-center">
+ <h2 class="grey-text">Please, fill the form to register</h2>
+      <div class="section"></div>
+
+      <div class="container">
+        <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+
+          <%= form_for @changeset, auth_path(@conn, :saveuser), fn f -> %>
+            <div class='row'>
+              <div class='col s12'>
+              </div>
+            </div>
+
+              <div class='row'>
+                <div class='input-field col s12'>
+                  <%= text_input f, :name, class: "validate", id: "name", placeholder: "Enter Your Name" %>
+                </div>
+              </div>
+            <div class='row'>
+              <div class='input-field col s12'>
+                <%= text_input f, :email, class: "validate", type: "email", id: "email", placeholder: "Enter Your Email" %>
+                </div>
+            </div>
+
+
+            <div class='row'>
+              <div class='input-field col s12'>
+                <%= text_input f, :password, class: "validate", id: "password", type: "password", placeholder: "Choose a Password" %>
+              </div>
+            </div>
+
+            <br />
+              <div class='row'>
+                <%= submit "Signup", class: "col s12 btn btn-large waves-effect indigo" %>
+                &nbsp;
+                <br>
+                <%= link to: auth_path(@conn, :index), class: "" do %>Already have an account? Login<% end %>
+              </div>
+          <% end %>
+        </div>
+      </div>
+      </div>

@@ -1,0 +1,42 @@
+<div class="container">
+<h2>All Activities</h2>
+
+  <div class="row">
+
+  <%= for activity <- @activities do %>
+    <div class="col s12 m4">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title"><%= activity.name %></span>
+          <p><%= activity.description %></p>
+        </div>
+
+
+
+        <div class="card-action">
+        <%= if Enum.member?(@likes, %{user_id: @user.id, activity_id: activity.id}) do %>
+          <%= link to: activity_path(@conn, :dislike, activity) do %>
+            <i class="material-icons">favorite</i>
+          <% end %>
+
+        <% else %>
+          <%= link to: activity_path(@conn, :like, activity) do %>
+            <i class="material-icons">favorite_border</i>
+          <% end %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+<% end %>
+
+  </div>
+
+  <div class="fixed-action-btn">
+  <%= link to: activity_path(@conn, :new), class: "btn-floating btn-large waves-effect waves-light blue-grey" do %>
+    <i class="material-icons">add</i>
+  <% end %>
+  </a>
+</div>
+           
+
+</div>
