@@ -29,8 +29,27 @@ defmodule Blogger.AuthControllerTest do
         end        
     end
 
-    test "save user test", %{conn: conn} do
+    describe "POST /saveuser" do
+        test "Check if user was saved succesfully to the database", %{conn: conn} do
+            params = %{
+                "name" => "sameh",
+                "email" => "sameh@gmail.com",
+                "password" => "123456"
+            }
 
+            user = create_user(params)
+            conn = post(conn, auth_path(conn, :saveuser), %{"user" => params})
+
+            assert redirected_to(conn, 302) == auth_path(conn, :signup)
+        end
     end
+
+    describe "GET /signout" do
+        test "Check if session is dropped", %{conn: conn} do
+            assert conn.assigns[:user_id] == nil
+        end
+    end
+
+
 
 end
