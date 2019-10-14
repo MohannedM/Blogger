@@ -8,9 +8,8 @@ defmodule Blogger.PostController do
         render conn, "index.html"
     end
 
-    def all(conn, post) do
-        user_id = post["user_id"]
-        if user_id do
+    def all(conn, %{"user_id" => user_id} = post) when user_id not in ["", nil] do
+
             user = Repo.get(Blogger.User, user_id)
             if user do
                 where = [user_id: user_id]
@@ -28,10 +27,7 @@ defmodule Blogger.PostController do
                 conn
                 |> put_status(:not_found)
             end
-        else
-            conn
-            |> put_status(:not_found)
-        end
+
     end
 
     def update(conn, post) do

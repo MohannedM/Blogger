@@ -23,32 +23,27 @@ defmodule Blogger.AuthController do
         hashed_password = Bcrypt.hash_pwd_salt(password)
         user = Map.replace(user, "password", hashed_password) 
 
-        changeset = User.changeset(%User{}, user)  
-        if Repo.get_by(User, email: user["email"]) do
+        changeset = User.changeset(%User{}, user)
+        with user when is_nil(user) <- Repo.get_by(User, email: user["email"]),
+        {:ok, user} <- Repo.insert(changeset) do
             conn
-            |> put_flash(:error, "Email Already Exist!")
-            |> redirect(to: auth_path(conn, :signup))
+            |> put_flash(:info, "You have successfully registerd!")
+            |> redirect(to: auth_path(conn, :index))
+        
         else
-            case Repo.insert(changeset) do
-                {:ok, _user} ->
-                    conn
-                    |> put_flash(:info, "You have successfully registerd!")
-                    |> redirect(to: auth_path(conn, :index))
-                {:error, changeset} -> 
-                    conn
-                    |> put_flash(:error, "An error occured")
-                    |> redirect(to: auth_path(conn, :signup))
-            end
-        end
+            %User{} ->
+                conn
+                |> put_flash(:error, "Email Already Exist!")
+                |> redirect(to: auth_path(conn, :signup))
+            {:error, changeset} ->
+                conn
+                |> put_flash(:error, "An error occured")
+                |> redirect(to: auth_path(conn, :signup))
+        end  
+
     end
 
     def login(conn, %{"user" => user}) do
-
-        # IO.inspect(user)
-        # IO.inspect("+++++++++++")
-        # IO.inspect(user_db)
-        # IO.inspect("+++++++++++")
-        # IO.inspect(Bcrypt.verify_pass(user["password"], user_db.password))
 
         with %{id: id, password: password} <- Repo.get_by(User, email: user["email"])
         do
